@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+	<script src="https://www.gstatic.com/charts/loader.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.js"></script>
+
+	<script>
+		google.charts.load('current', {packages: ['corechart']});
+
+		google.charts.setOnLoadCallback(() => {
+		fetch('http://localhost:5000/api/latestmeasurements')
+			.then(response => response.json())
+			.then(dataFromServer => drawTableAndChart(dataFromServer, "latest_measurements_chart"));
+			});
+
+		function drawTableAndChart(data, chart) {
+			var datatable = new google.visualization.DataTable();
+			datatable.addColumn("datetime", "Time")
+			datatable.addColumn("number", "Temperature")
+			datatable.addColumn("number", "Humidity")
+			
+			var rows = data.map(row => [
+				new Date(row[0]),
+				row[1],
+				row[2]
+			])
+			
+			datatable.addRows(rows)
+
+			var chart = new google.visualization.LineChart(document.getElementById(chart));
+		      
+			chart.draw(datatable);
+		      }
+		
+		function haePaivamaara() {
+
+		const paivamaara = document.getElementById("paivavalinta").value;
+
+		fetch('/api/showmeasurements?date=' + paivamaara)
+			.then(response => response.json())
+			.then(data => drawTableAndChart(data, "day_chart"))
+			.catch(error => console.error(error));
+		}
+					
+					
+		fetch("/api/availabledates")
+			.then(response => response.json())
+			.then(dates => {
+				const select = document.getElementById("paivavalinta");
+				dates.forEach(date => {
+					const option = document.createElement("option");
+					option.value = date;
+					option.textContent = date;
+					select.appendChild(option);
+				});
+			});
+		
+    </script>
+
+
+    </head>
+    <body>
+	<h2>Huoneen lämpötila ja ilmankosteus</h2>
+	<h4>Ajankohtainen mittausdata</h4>
+	<p>Kuvaa huoneen lämpötilaa ja ilmankosteutta viimeisen 6 tunnin aikana.</p>
+	<div id="latest_measurements_chart"></div>
+        <h4>Mittaushistoria</h4>
+	<p>Kuvaa valitun vuorokauden lämpötilan ja ilmankosteuden huoneessa tunneittain.</p>
+	<label for="paivamaara">Valitse päivämäärä</label>
+	<select id="paivavalinta"></select>
+	<button id="select_button" onclick="haePaivamaara()">Valitse</button>
+	<div id="day_chart"></div>
+    </body>
+</html>
+
+ 
