@@ -14,10 +14,6 @@ measurements = []
 def home():
     return render_template('index.html')
 
-@app.route("/showchart")
-def showchart():
-    return render_template('chart.html')
-
 @app.route("/api/measurement", methods=["POST"])
 def get_measurement():
     data = request.get_json()
