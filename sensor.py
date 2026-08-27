@@ -23,7 +23,7 @@ try:
 			conn.commit()
 
 			data = [timestamp_ms, temp, humi]
-			response = requests.post("http://127.0.0.1:5000/api/measurement", json=data)
+			response = requests.post("tite25-iot-mkit-anfyhbahf5a0gbb6.switzerlandnorth-01.azurewebsites.net/api/measurement", json=data)
 
 			print(response)
 			time.sleep(60)
