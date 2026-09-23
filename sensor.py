@@ -3,7 +3,6 @@ import time
 from datetime import datetime
 import seeed_dht
 import json
-import sqlite3s
 
 sensor = seeed_dht.DHT("11", 12)
 print("DHT11 reading every hour, Ctrl+C to quit")
