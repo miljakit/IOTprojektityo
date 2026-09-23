@@ -9,7 +9,7 @@ app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-measurements = []
+#measurements = []
 
 @app.route("/")
 def home():
@@ -18,7 +18,10 @@ def home():
 @app.route("/api/measurement", methods=["POST"])
 def get_measurement():
 	data = request.get_json()
-    measurements.append(data)
+	temp = data[0]
+	humi = data[1] 
+
+    #measurements.append(data)
     print("saatiin mittaus")
     print(data)
 
@@ -26,10 +29,11 @@ def get_measurement():
 	cursor = conn.cursor()
 
 	cursor.execute("""
-			INSERT INTO mittaukset (data)
+			INSERT INTO mittaukset (temp, humi)
 			VALUES (?, ?)
 			""", (temp, humi))
 			conn.commit()
+			conn.close()
 			
     data_json = json.dumps(data)
 
