@@ -32,8 +32,8 @@ def get_measurement():
             INSERT INTO mittaukset (temp, humi)
             VALUES (?, ?)
             """, (temp, humi))
-            conn.commit()
-            conn.close()
+    conn.commit()
+    conn.close()
             
     data_json = json.dumps(data)
 
