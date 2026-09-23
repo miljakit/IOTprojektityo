@@ -23,5 +23,3 @@ try:
 
 except KeyboardInterrupt:
     print("\nBye")
-
-conn.close()
