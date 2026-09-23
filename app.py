@@ -2,6 +2,7 @@ from flask import Flask, request, Response, render_template, jsonify # pip insta
 import json
 from flask_cors import CORS, cross_origin # pip install flask-cors
 import sqlite3
+import seeed_dht
 
 app = Flask(__name__)
 
@@ -16,13 +17,20 @@ def home():
 
 @app.route("/api/measurement", methods=["POST"])
 def get_measurement():
-    data = request.get_json()
-
+	data = request.get_json()
     measurements.append(data)
-
     print("saatiin mittaus")
     print(data)
 
+	conn = sqlite3.connect("sensoridata.db")
+	cursor = conn.cursor()
+
+	cursor.execute("""
+			INSERT INTO mittaukset (data)
+			VALUES (?, ?)
+			""", (temp, humi))
+			conn.commit()
+			
     data_json = json.dumps(data)
 
     return data_json
