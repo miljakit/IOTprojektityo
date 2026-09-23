@@ -2,7 +2,6 @@ from flask import Flask, request, Response, render_template, jsonify # pip insta
 import json
 from flask_cors import CORS, cross_origin # pip install flask-cors
 import sqlite3
-import seeed_dht
 
 app = Flask(__name__)
 
