@@ -15,7 +15,7 @@ try:
 			print(f"DHT11  Humidity {humi:.1f}%  Temperature {temp:.1f}C")
 
 			data = [temp, humi]
-			response = requests.post("tite25-iot-mkit-anfyhbahf5a0gbb6.switzerlandnorth-01.azurewebsites.net/api/measurement", json=data)
+			response = requests.post("http://tite25-iot-mkit-anfyhbahf5a0gbb6.switzerlandnorth-01.azurewebsites.net/api/measurement", json=data)
 
 			print(response)
 			time.sleep(60) 
