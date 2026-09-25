@@ -20,12 +20,12 @@ try:
 			print("L�hetettiin:", data)
 			print("HTTP status:", response.status_code)
 			print("Azure vastaus:", response.text)
-�
-			except requests.exceptions.RequestException as e:
-			print("L�hetys ep�onnistui:", e)
 
-			print(response)
-			time.sleep(60) 
+except requests.exceptions.RequestException as e:
+	print("L�hetys ep�onnistui:", e)
+
+	print(response)
+	time.sleep(60) 
 
 except KeyboardInterrupt:
     print("\nBye")
