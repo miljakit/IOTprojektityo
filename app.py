@@ -12,8 +12,6 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 DB_PATH = "/home/data/sensoridata.db"
 
-init_db()
-
 @app.route("/")
 def home():
     return render_template('index.html')
@@ -111,3 +109,4 @@ def available_dates():
 
 if __name__ == "__main__":
     app.run(debug=True)
+    init_db()
