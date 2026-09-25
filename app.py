@@ -108,6 +108,22 @@ def available_dates():
     
     return jsonify(dates)
 
+@app.route("/api/testdb")
+def test_db():
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT *
+        FROM mittaukset
+        ORDER BY id DESC
+    """)
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    return jsonify(rows)
+
 init_db()
 
 if __name__ == "__main__":
