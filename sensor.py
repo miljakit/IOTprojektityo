@@ -17,6 +17,13 @@ try:
 			data = [temp, humi]
 			response = requests.post("http://tite25-iot-mkit-anfyhbahf5a0gbb6.switzerlandnorth-01.azurewebsites.net/api/measurement", json=data)
 
+			print("L�hetettiin:", data)
+			print("HTTP status:", response.status_code)
+			print("Azure vastaus:", response.text)
+�
+			except requests.exceptions.RequestException as e:
+			print("L�hetys ep�onnistui:", e)
+
 			print(response)
 			time.sleep(60) 
 
