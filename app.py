@@ -10,9 +10,28 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 #measurements = []
 
+DB_PATH = "/home/data/sensoridata.db"
+
+init_db()
+
 @app.route("/")
 def home():
     return render_template('index.html')
+
+def init_db():
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS mittaukset (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            temp REAL,
+            humi REAL
+        )
+    """)
+
+    conn.commit()
+    conn.close()
 
 @app.route("/api/measurement", methods=["POST"])
 def get_measurement():
@@ -24,7 +43,7 @@ def get_measurement():
     print("saatiin mittaus")
     print(data)
 
-    conn = sqlite3.connect("sensoridata.db")
+    conn = sqlite3.connect("DB_PATH")
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -42,7 +61,7 @@ def get_measurement():
 def show_measurements():
     paivamaara = request.args.get("date")
     
-    conn = sqlite3.connect("sensoridata.db")
+    conn = sqlite3.connect("DB_PATH")
     cursor = conn.cursor()
     
     cursor.execute("""
@@ -59,7 +78,7 @@ def show_measurements():
     
 @app.route("/api/latestmeasurements")
 def latest_measurements():
-    conn = sqlite3.connect("sensoridata.db")
+    conn = sqlite3.connect("DB_PATH")
     cursor = conn.cursor()
     
     cursor.execute("""
@@ -76,7 +95,7 @@ def latest_measurements():
     
 @app.route("/api/availabledates")
 def available_dates():
-    conn = sqlite3.connect("sensoridata.db")
+    conn = sqlite3.connect("DB_PATH")
     cursor = conn.cursor()
     
     cursor.execute("""
