@@ -22,9 +22,10 @@ def init_db():
 
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS mittaukset (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            temp REAL,
-            humi REAL
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        aika DATETIME DEFAULT CURRENT_TIMESTAMP,
+        lampotila REAL,
+        kosteus REAL
         )
     """)
 
@@ -41,7 +42,7 @@ def get_measurement():
     print("saatiin mittaus")
     print(data)
 
-    conn = sqlite3.connect("DB_PATH")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -59,7 +60,7 @@ def get_measurement():
 def show_measurements():
     paivamaara = request.args.get("date")
     
-    conn = sqlite3.connect("DB_PATH")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     
     cursor.execute("""
@@ -76,7 +77,7 @@ def show_measurements():
     
 @app.route("/api/latestmeasurements")
 def latest_measurements():
-    conn = sqlite3.connect("DB_PATH")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     
     cursor.execute("""
@@ -93,7 +94,7 @@ def latest_measurements():
     
 @app.route("/api/availabledates")
 def available_dates():
-    conn = sqlite3.connect("DB_PATH")
+    conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     
     cursor.execute("""
@@ -107,6 +108,8 @@ def available_dates():
     
     return jsonify(dates)
 
+init_db()
+
 if __name__ == "__main__":
     app.run(debug=True)
-    init_db()
+    
